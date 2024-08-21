@@ -7,11 +7,10 @@ products:
 - Entra
 - Verified ID
 description: "A code sample demonstrating issuance and verification of verifiable credentials."
-urlFragment: "active-directory-verifiable-credentials-dotnet"
 ---
 # Verified ID idTokenHint Sample for ASPNet Core
 
-This code sample demonstrates how to use Microsoft Entra Verified ID to issue and consume verifiable credentials.
+This code sample is taken from the Microsoft repo [Azure-Samples active-directory-verifiable-credentials-dotnet](https://github.com/Azure-Samples/active-directory-verifiable-credentials-dotnet), but just the 1-asp-net-core-api-idtokenhint solution.
 
 ## About this sample
 

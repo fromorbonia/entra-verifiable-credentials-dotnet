@@ -46,43 +46,39 @@ namespace AspNetCoreVerifiableCredentials
         }
 
         private IssuanceRequest SetClaims( IssuanceRequest request ) {
+            
+            //Create a nested JSON object for the claims property
             request.claims = new ExpandoObject();
-
             request.claims.exam_name = String.Format("{0:yyyy-MM-dd HH:mm:ss}-Spaghetti knots", DateTime.Now);
             request.claims.result = new ExpandoObject();
             request.claims.result.mark = "90";
             request.claims.result.examiner_comments = "Could have done better";
 
-            //request.claims.mark = "89";
-            //request.claims.examiner_comments = "Well you could have done better";
 
-            //request.claims.Add( "given_name", "Megan" );
-            //request.claims.Add( "family_name", "Bowen" );
-
-            string photoClaimName = "";
-            // get photo claim from manifest
-            if (GetCredentialManifest( out string manifest, out string error )) {
-                JObject jsonManifest = JObject.Parse(manifest);
-                foreach( var claim in jsonManifest["display"]["claims"] ) {
-                    string claimName = ((JProperty)claim).Name;                    
-                    if (jsonManifest["display"]["claims"][claimName]["type"].ToString() == "image/jpg;base64url" ) {
-                        photoClaimName = claimName.Replace( "vc.credentialSubject.", "");
-                    }
-                }
-            }
-            if (!string.IsNullOrWhiteSpace( photoClaimName) ) {
-                // if we have a photoId in the Session
-                string photoId = this.Request.Headers["rsid"];
-                if ( !string.IsNullOrWhiteSpace(photoId) ) {
-                    // if we have a photo in-mem cache
-                    if ( _cache.TryGetValue( photoId, out string photo ) ) {
-                        _log.LogTrace( $"Adding user photo to credential. photoId: {photoId}");
-                        request.claims.Add( photoClaimName, photo );
-                    } else {
-                        _log.LogTrace( $"Couldn't find a user photo to add to credential. photoId: {photoId}" );
-                    }
-                }
-            }
+            //string photoClaimName = "";
+            //// get photo claim from manifest
+            //if (GetCredentialManifest( out string manifest, out string error )) {
+            //    JObject jsonManifest = JObject.Parse(manifest);
+            //    foreach( var claim in jsonManifest["display"]["claims"] ) {
+            //        string claimName = ((JProperty)claim).Name;                    
+            //        if (jsonManifest["display"]["claims"][claimName]["type"].ToString() == "image/jpg;base64url" ) {
+            //            photoClaimName = claimName.Replace( "vc.credentialSubject.", "");
+            //        }
+            //    }
+            //}
+            //if (!string.IsNullOrWhiteSpace( photoClaimName) ) {
+            //    // if we have a photoId in the Session
+            //    string photoId = this.Request.Headers["rsid"];
+            //    if ( !string.IsNullOrWhiteSpace(photoId) ) {
+            //        // if we have a photo in-mem cache
+            //        if ( _cache.TryGetValue( photoId, out string photo ) ) {
+            //            _log.LogTrace( $"Adding user photo to credential. photoId: {photoId}");
+            //            request.claims.Add( photoClaimName, photo );
+            //        } else {
+            //            _log.LogTrace( $"Couldn't find a user photo to add to credential. photoId: {photoId}" );
+            //        }
+            //    }
+            //}
             return request;
         }
 
